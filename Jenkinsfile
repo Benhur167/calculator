@@ -8,22 +8,24 @@ pipeline {
 
     stages {
 
-        
-
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${DOCKERHUB_USER}/${IMAGE_NAME}")
-                }
+                bat "docker build -t %DOCKERHUB_USER%/%IMAGE_NAME% ."
+            }
+        }
+
+        stage('Clean Old Container') {
+            steps {
+                bat "docker stop calculator-app || exit 0"
+                bat "docker rm calculator-app || exit 0"
             }
         }
 
         stage('Run Container') {
             steps {
-                script {
-                    bat 'docker run -d -p 3000:3000 ${DOCKERHUB_USER}/${IMAGE_NAME}'
-                }
+                bat "docker run -d -p 3000:3000 --name calculator-app %DOCKERHUB_USER%/%IMAGE_NAME%"
             }
         }
+
     }
 }
