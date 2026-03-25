@@ -21,7 +21,7 @@ pipeline {
         stage('Run Container') {
             steps {
                 script {
-                    sh 'docker run -d -p 3000:3000 ${DOCKERHUB_USER}/${IMAGE_NAME}'
+                    bat 'docker run -d -p 3000:3000 ${DOCKERHUB_USER}/${IMAGE_NAME}'
                 }
             }
         }
